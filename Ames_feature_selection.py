@@ -166,23 +166,22 @@ X_train, X_test, y_train, y_test = train_test_split(X_reduced, targets, test_siz
                                                     random_state=seed)
 
 #Hyper tuning with reduced (numeric) cataset SVM gave bad results
-#from hyperopt import fmin, hp, tpe      #,Trials, space_eval
-#space = {'gamma': hp.uniform('gamma', 0, 10),'C': hp.uniform('C', 0, 10)}
-#         #,'kernel': hp.choice('kernel', ['linear', 'rbf'])}
-#
-#def objective(params):
-#    params = {'gamma': params['gamma'],
-#              'C':params['C'] }
-#    svm = SVR(**params)
-#    best_score = cross_val_score(svm, X_train, y_train, scoring='neg_mean_squared_error', cv=4, n_jobs=2).mean()
-#    loss = 1 - best_score
-#    return loss
-#
+from hyperopt import fmin, hp, tpe      #,Trials, space_eval
+space = {'gamma': hp.uniform('gamma', 0, 10),'C': hp.uniform('C', 0, 10),}
+         'kernel': hp.choice('kernel', ['linear', 'rbf'])}
+
+def objective(params):
+    params = {'gamma': params['gamma'],
+              'C':params['C'] }
+    svm = SVR(**params)
+    best_score = cross_val_score(svm, X_train, y_train, scoring='neg_mean_squared_error', cv=4, n_jobs=2).mean()
+    loss = 1 - best_score
+    return loss
+
 ## Run the algorithm
-#best = fmin(fn=objective,space=space, max_evals=100, rstate=np.random.RandomState(42), algo=tpe.suggest)
-#print(best)
+best = fmin(fn=objective,space=space, max_evals=100, rstate=np.random.RandomState(42), algo=tpe.suggest)
+print(best)
 
 
-#LET'S PRACTICE XGB!
-import xgboost as xgb
+
 
