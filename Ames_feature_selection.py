@@ -3,11 +3,12 @@
 Created on Wed Sep 11 23:00:55 2019
 
 @author: black
+#TRY : EXTRACTION, SELECTION, MANIFOLD, DECOMPOSITION modules from scikit-learn
+
 """
 import pandas as pd
 from sklearn.ensemble import RandomForestRegressor as RFR, GradientBoostingRegressor as GBR
 from sklearn.linear_model import LassoCV, Lasso
-#TRY : EXTRACTION, SELECTION, MANIFOLD, DECOMPOSITION
 from sklearn.feature_selection import RFE
 from sklearn.decomposition import PCA 
 from sklearn.manifold import TSNE
@@ -40,9 +41,6 @@ missers.plot(kind='bar', title='Percent of Missing Entries'); plt.show()
 categorical.drop(columns=missers.index.values, axis=1, inplace=True)
 data.drop(columns=missers.index.values, axis=1, inplace=True)
 
-#missers = numeric.isna().sum() / rows
-#missers =  missers[missers > 0.01].sort_values()*100
-#missers.plot(kind='bar', title='Percent of Missing Entries'); plt.show()
 
 def to_categorical(data):
     """
@@ -60,15 +58,15 @@ def to_categorical(data):
 
 to_categorical(data); 
 
-#1. TSNE - Visualization mostly
-#t = TSNE(learning_rate=50)
-#tsne_features = t.fit_transform(numeric_sc)
-#data['x'] = tsne_features[:, 0]
-#data['y'] = tsne_features[:, 1]
+#1. TSNE - Visualization mostly , need to couble heck it works as expected
+t = TSNE(learning_rate=50)
+tsne_features = t.fit_transform(numeric_sc)
+data['x'] = tsne_features[:, 0]
+data['y'] = tsne_features[:, 1]
 
 
 #2. PCA - Need Standardization first as PCA uses variances, and NO nans
-#feature scaling  should be done before imputation (found via search)
+#feature scaling  should be done before imputation (found via empirical search)
 scaler = SS()
 numeric_sc[numeric_sc.columns] = scaler.fit_transform(numeric_sc[numeric_sc.columns]) 
 imp = SImp(strategy='median')
@@ -78,7 +76,7 @@ assert(numeric_sc.isna().sum().sum() == 0)
 #use fit_Transform when using the components (plot) - else use just fit
 pca = PCA() 
 pca.fit(numeric_sc)
-#print(pca.explained_variance_ratio_.cumsum()) #cumsum more useful!
+#print(pca.explained_variance_ratio_.cumsum()) 
 
 
 pc_df = pca.fit_transform(numeric_sc)
