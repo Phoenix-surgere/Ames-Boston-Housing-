@@ -129,12 +129,6 @@ print("{0:.1} RF RFE R^2 on test set.".format(rfe.score(X_test, y_test)))
 mse = MSE(y_test, rfe.predict(X_test))
 print("{} RF RFE RMSE on test set.".format(mse**0.5))
 
-#3.3 Lasso
-
-## Calculate how many features have a zero coefficient
-#n_ignored = sum(zero_coef)
-#print("The model has ignored {} out of {} features.".format(n_ignored, len(lasso.coef_)))
-#lasso_coefs =  dict(zip(lasso.coef_.round(4), X_sc.columns))
 
 #3.3 LassoCV
 lasso_CV = LassoCV(n_alphas=250, cv=4, n_jobs=2)
@@ -163,7 +157,7 @@ print(X_reduced.columns)
 X_train, X_test, y_train, y_test = train_test_split(X_reduced, targets, test_size=0.1,
                                                     random_state=seed)
 
-#Hyper tuning with reduced (numeric) cataset SVM gave bad results
+#Hyper tuning with reduced (numeric) cataset SVM gave bad results? Need to try grid search 
 from hyperopt import fmin, hp, tpe      #,Trials, space_eval
 space = {'gamma': hp.uniform('gamma', 0, 10),'C': hp.uniform('C', 0, 10),}
          'kernel': hp.choice('kernel', ['linear', 'rbf'])}
